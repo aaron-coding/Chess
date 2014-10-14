@@ -6,11 +6,17 @@ class Board
   
   def initialize
     @board = Array.new(8) {Array.new(8) {nil} }
-    
+    populate
+  end
+  
+  def populate
+    (0..7).each do |idx|
+      @board[1][idx] = Pawn.new(:black, [1, idx], self)   
+      @board[6][idx] = Pawn.new(:white, [6, idx], self)   
+    end
   end
   
   def move(start_pos, end_pos)
-#    start_pos =
 
   end
   
@@ -18,11 +24,10 @@ end
 
 class Piece
   
-  def initialize(type, color, pos, board_obj)
-    @type = type
+  def initialize(color, pos, board_obj)
     @color = color
     @board_obj = board_obj
-    @position = pos
+    @pos = pos
   end
   
   def moves
@@ -108,8 +113,94 @@ class Queen < SlidingPiece
 end
 
 class SteppingPiece < Piece
+  
+  def initialize
+    @direction
+  end
+  
+  def moves
+    all_moves = super
+    
+    piece_moves = []
+    if @directions.include?(:a)
+      piece_moves += all_moves.select do |pos_move|
+        (@pos[0] - pos_move[0]).between?(-1,1) && 
+        (@pos[1] - pos_move[1]).between?(-1,1)
+      end
+    end
+    
+    if @directions.include?(:kn)
+      piece_moves += all_moves.select do |pos_move|
+        ((@pos[0] - pos_move[0]).abs == 1 && (@pos[1] - pos_move[1]).abs == 2) ||
+        ((@pos[0] - pos_move[0]).abs == 2 && (@pos[1] - pos_move[1]).abs == 1)
+      end
+    end
+    
 
+    piece_moves.select{|p_move| p_move != @pos}
+  end
 end
 
+class King < SteppingPiece
+  
+  def initialize
+    super
+    @directions = [:a]
+    @pos = [1,1]
+  end
+  
+  def moves
+    super
+  end
+  
+end
 
-p Board.new.board
+class Knight < SteppingPiece
+  
+  def initialize
+    @directions = [:kn]
+    @pos = [4,4]
+  end
+  
+  def moves
+    super
+  end
+  
+end
+
+class Pawn < Piece
+  
+  def initialize(color, pos, board_obj)
+    super(color, pos, board_obj)
+    # @color = :black
+  end
+  
+  def moves
+    all_moves = super
+    piece_moves = []
+    
+    if @color == :white
+      piece_moves += all_moves.select do |pos_move|
+        move_1 = (pos_move == [@pos[0] - 1, @pos[1]] )
+        if @pos[0] == 6 
+          move_1 || pos_move == [@pos[0] - 2, @pos[1]] 
+        else
+          move_1
+        end
+      end
+    end
+    
+    if @color == :black
+      piece_moves += all_moves.select do |pos_move|
+        move_1 = (pos_move == [@pos[0] + 1, @pos[1]] )
+        if @pos[0] == 1 
+          move_1 || pos_move == [@pos[0] + 2, @pos[1]] 
+        else
+          move_1
+        end
+      end
+    end
+      piece_moves
+    end
+  
+end
