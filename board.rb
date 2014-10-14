@@ -4,7 +4,15 @@ class Board
   
   def initialize
     @board = Array.new(8) {Array.new(8) {nil} }
+    # @board[0][0] = Rook.new(:black, [0, 0], self)
+    # @board[4][0] = Pawn.new(:black, [4, 0], self)
+    # @board[0][3] = Queen.new(:white, [0, 3], self)
     populate
+  end
+  
+  def [](pos)
+    row, col = pos
+    @board[row][col]
   end
   
   def populate

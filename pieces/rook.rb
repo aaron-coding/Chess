@@ -1,7 +1,7 @@
 class Rook < SlidingPiece
 
-  def initialize(color, pos, board_obj)
-    super(color, pos, board_obj)
+  def initialize(color, pos, board)
+    super(color, pos, board)
   end
   
 
@@ -9,7 +9,7 @@ class Rook < SlidingPiece
     [[1, 0], [0, 1], [-1, 0], [0, -1]]
   end
     
-  # def inspect
-  #   return "R"
-  # end
+   def inspect
+     return "R"
+   end
 end

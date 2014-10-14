@@ -1,5 +1,3 @@
- 
-
 class SteppingPiece < Piece
   
   def moves
@@ -12,13 +10,19 @@ class SteppingPiece < Piece
       piece_moves << temp_move.dup
     end    
     
-    piece_moves.select do |p_move| 
+    piece_moves.select! do |p_move| 
       p_move[0] >= 0 && 
       p_move[0] <= 7 && 
       p_move[1] >= 0 && 
       p_move[1] <= 7
     end
     
+    p board
+    
+    piece_moves.select do |coord| 
+      board[coord].nil? ||
+      board[coord].color != color
+    end
   end
 end
 

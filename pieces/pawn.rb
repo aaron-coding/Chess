@@ -1,7 +1,7 @@
 class Pawn < Piece
   
-  def initialize(color, pos, board_obj)
-    super(color, pos, board_obj)
+  def initialize(color, pos, board)
+    super(color, pos, board)
   end
   
   def moves
@@ -32,4 +32,7 @@ class Pawn < Piece
       piece_moves
     end
   
+    def inspect
+      "P"
+    end
 end
