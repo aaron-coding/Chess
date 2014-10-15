@@ -1,7 +1,6 @@
 class SlidingPiece < Piece
   
   def moves
-
     piece_moves = []
     directions.each do |delta|
       var_move = @pos.dup
@@ -19,10 +18,8 @@ class SlidingPiece < Piece
            break
         end
         piece_moves << var_move.dup
-        
         var_move[0] += delta[0]
         var_move[1] += delta[1]
-              
       end  
     end
     p "piece_moves is #{piece_moves} right before select"
@@ -32,8 +29,6 @@ class SlidingPiece < Piece
     piece_moves
     # piece_moves.select!{|p_move| !move_into_check?(p_move) }
     #
-
-    
   end
 end
 

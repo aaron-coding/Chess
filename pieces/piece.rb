@@ -11,18 +11,21 @@ class Piece
   def moves
   end 
   
+  def set_pos(new_pos)
+    @pos = new_pos[0], new_pos[1]
+  end
+  
   def valid_moves
     
   end
   
   def move_into_check?(new_pos)
-    in_check = false
+    # in_check = false
     # moves.each do |coord|
     dupped_board = board.dup
-    p "pos.dup #{@pos.dup} n_pos #{new_pos}"
     dupped_board.move!(@pos.dup, new_pos)
-    in_check = true if dupped_board.in_check?(color)
-    in_check
+    dupped_board.in_check?(color)
+    # in_check
   end
       
 
