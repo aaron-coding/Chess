@@ -19,9 +19,18 @@ class Piece
     board_spots
   end
   
-  def delete
+  def valid_moves
     
   end
   
+  def move_into_check?(new_pos)
+    in_check = false
+    # moves.each do |coord|
+    dupped_board = board.dup
+    dupped_board.move(@pos, new_pos)
+    in_check = true if dupped_board.in_check?(color)
+    in_check
+  end
+      
 
 end
