@@ -41,11 +41,6 @@ class Pawn < Piece
       board[coord].nil?
     end
     
-    # code to eat diagonally
-    # piece_moves.select! do |move|
-    #   !(move_into_check?(move))
-    # end
-    
     piece_moves
   end
   

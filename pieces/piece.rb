@@ -16,16 +16,15 @@ class Piece
   end
   
   def valid_moves
-    
+    moves.select! do |move|
+      move_into_check?(move) == false
+    end
   end
   
   def move_into_check?(new_pos)
-    # in_check = false
-    # moves.each do |coord|
     dupped_board = board.dup
     dupped_board.move!(@pos.dup, new_pos)
     dupped_board.in_check?(color)
-    # in_check
   end
       
 

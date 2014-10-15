@@ -102,7 +102,7 @@ class Board
     
     if @board[start_row][start_col].nil?
       raise "No piece there"
-    elsif !(@board[start_row][start_col].moves.include?(end_pos))
+    elsif !(@board[start_row][start_col].valid_moves.include?(end_pos))
       raise "That piece can't go there, dude!"
     elsif @board[start_row][start_col].move_into_check?(end_pos)
       raise "You can't put yourself into check."
