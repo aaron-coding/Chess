@@ -10,6 +10,7 @@ class Rook < SlidingPiece
   end
     
    def inspect
-     return "R"
+     return "BR" if color == :black
+     return "WR" if color == :white
    end
 end

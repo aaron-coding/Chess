@@ -8,16 +8,8 @@ class Piece
     @pos = pos
   end
   
-  
   def moves
-    board_spots = []
-    (0..7).each do |row|
-      (0..7).each do |col|
-        board_spots << [row, col]
-      end
-    end
-    board_spots
-  end
+  end 
   
   def valid_moves
     
@@ -27,7 +19,8 @@ class Piece
     in_check = false
     # moves.each do |coord|
     dupped_board = board.dup
-    dupped_board.move(@pos, new_pos)
+    p "pos.dup #{@pos.dup} n_pos #{new_pos}"
+    dupped_board.move!(@pos.dup, new_pos)
     in_check = true if dupped_board.in_check?(color)
     in_check
   end

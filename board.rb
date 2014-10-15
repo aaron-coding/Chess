@@ -2,12 +2,14 @@
 class Board
   attr_accessor :board
   
-  def initialize
+  def initialize(fill = true)
     @board = Array.new(8) {Array.new(8) {nil} }
-    # @board[0][0] = Rook.new(:black, [0, 0], self)
-    # @board[4][0] = Pawn.new(:black, [4, 0], self)
-    # @board[0][3] = King.new(:white, [0, 3], self)
-    populate
+    #populate if fill
+    
+     @board[0][3] = King.new(:white, [0, 3], self)
+     @board[1][0] = Rook.new(:black, [1, 0], self)  
+     @board[0][0] = Rook.new(:black, [0, 0], self)
+     
   end
   
   def [](pos)
@@ -64,42 +66,63 @@ class Board
        end   
       end
     end
+    nil
+  end
+  
+  def swap_color(color)
+    return :white if color == :black
+    :black
   end
   
   def in_check?(color)
     kings_coords = find_king(color)
-    enemy_moves(color).include?(kings_coords)
+    #p "in_check is here"
+    all_moves(swap_color(color)).include?(kings_coords)
   end
   
-  def enemy_moves(color) 
-    enemy_moves = []
+  def all_moves(color) 
+    all_moves = []
     (0..7).each do |row|
       (0..7).each do |col|
-        if !(@board[row][col].nil?)
-          if @board[row][col].color != color
-            enemy_moves += @board[row][col].moves
+        if !(@board[row][col].nil?) 
+          if @board[row][col].color == color
+            if !(@board[row][col].moves.nil?) 
+              all_moves += @board[row][col].moves
+            end
           end
        end   
       end
     end
-    enemy_moves
+    all_moves
   end
   
   def move(start_pos, end_pos)
-    row, col = start_pos
+    start_row, start_col = start_pos
     end_row, end_col = end_pos
-    if @board[row][col].nil?
+    if @board[start_row][start_col].nil?
       raise "No piece there"
-    elsif !(@board[row][col].moves.include?(end_pos))
+    elsif !(@board[start_row][start_col].moves.include?(end_pos))
       raise "That piece can't go there, dude!"
+    elsif @board[start_row][start_col].move_into_check?(end_pos)
+      raise "You can't put yourself into check."
     end
-    @board[end_row][end_col] = @board[row][col]
+    p "hi"
+    @board[end_row][end_col] = @board[start_row][start_col]
     @board[end_row][end_col].pos = end_pos
-    @board[row][col] = nil
+    @board[start_row][start_col] = nil
+  end
+  
+  def move!(start_pos, end_pos)
+    start_row, start_col = start_pos
+    end_row, end_col = end_pos
+    @board[end_row][end_col] = @board[start_row][start_col]
+    @board[end_row][end_col].pos = end_pos
+    @board[start_row][start_col] = nil
+    p "move! running"
   end
 
   def dup
-    duped_board = Board.new
+    duped_board = Board.new(false)
     (0..7).each do |row|
       (0..7).each do |col|
         old_spot = @board[row][col]
@@ -113,5 +136,10 @@ class Board
     duped_board
    end
     
-
+   def checkmate?(color)
+     if in_check?(color)
+       return all_moves(color).count == 0
+     end
+     false
+   end
 end

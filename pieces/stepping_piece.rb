@@ -16,13 +16,16 @@ class SteppingPiece < Piece
       p_move[1] >= 0 && 
       p_move[1] <= 7
     end
+  
     
-    p board
-    
-    piece_moves.select do |coord| 
+    piece_moves.select! do |coord| 
       board[coord].nil? ||
       board[coord].color != color
     end
+    piece_moves.select! do |move|
+      !(move_into_check?(move))
+    end
+    piece_moves
   end
 end
 
