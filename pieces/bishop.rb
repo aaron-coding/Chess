@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Bishop < SlidingPiece
   #
   # def initialize(color, pos, board)
@@ -9,7 +10,7 @@ class Bishop < SlidingPiece
   end
   
   def inspect
-    "B"
+    color == :white ? "♗" : "♝"
   end
   
 end

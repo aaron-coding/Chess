@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Knight < SteppingPiece
     #
   # def initialize(color, pos, board)
@@ -9,6 +10,6 @@ class Knight < SteppingPiece
   end
   
   def inspect
-    "Kn"
+    color == :white ? "♘" : "♞"
   end
 end

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Rook < SlidingPiece
 
   # def initialize(color, pos, board)
@@ -9,7 +10,6 @@ class Rook < SlidingPiece
   end
     
    def inspect
-     return "BR" if color == :black
-     return "WR" if color == :white
+      color == :white ? "♖" : "♜"
    end
 end

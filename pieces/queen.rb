@@ -1,4 +1,4 @@
-  
+# encoding: utf-8
 class Queen < SlidingPiece
   
   # def initialize(color, pos, board)
@@ -10,6 +10,6 @@ class Queen < SlidingPiece
   end
   
   def inspect
-    "Q"
+    color == :white ? "♕" : "♛"
   end
 end

@@ -101,18 +101,17 @@ class Board
     end_row, end_col = end_pos
     
     if @board[start_row][start_col].nil?
-      raise "No piece there"
+      raise ChessError.new("No piece there")
+      #raise "No piece there"
     elsif !(@board[start_row][start_col].valid_moves.include?(end_pos))
-      raise "That piece can't go there, dude!"
+      raise ChessError.new("That piece can't go there, dude!")
+      #raise "That piece can't go there, dude!"
     elsif @board[start_row][start_col].move_into_check?(end_pos)
-      raise "You can't put yourself into check."
+      raise ChessError.new("You can't put yourself into check.")
+      #raise "You can't put yourself into check."
     end
     move!(start_pos, end_pos)
-    # p "hi"
-#     @board[end_row][end_col] = @board[start_row][start_col]
-#     #@board[end_row][end_col].pos = end_pos
-#     @board[end_row][end_col].set_pos(end_pos)
-#     @board[start_row][start_col] = nil
+
   end
   
   def move!(start_pos, end_pos)
@@ -140,9 +139,16 @@ class Board
   end
   
   def display
-    @board.each do |row|
-      p row
+    print "    0   1   2   3   4   5   6   7"
+    @board.each_with_index do |row, idx|
+      puts "\n   ________________________________"
+      print "#{idx} | "
+      row.each do |piece|
+        print "#{piece.inspect} | " unless piece.nil?
+        print "  | " if piece.nil?
+      end 
     end
+      puts "\n   ________________________________"
   end
     
   def checkmate?(color)

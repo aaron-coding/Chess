@@ -19,6 +19,7 @@ class Piece
     moves.select! do |move|
       move_into_check?(move) == false
     end
+    moves
   end
   
   def move_into_check?(new_pos)

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class King < SteppingPiece
   
   def directions
@@ -5,7 +6,7 @@ class King < SteppingPiece
   end
   
   def inspect
-    "K"
+    color == :white ? "♔" : "♚"
   end
 end
 
