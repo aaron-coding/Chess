@@ -5,6 +5,10 @@ class Board
   def initialize(fill = true)
     @board = Array.new(8) { Array.new(8) }
     populate if fill
+    # @board[2][2] = Queen.new(:white, [2, 2], self)
+   #  @board[1][1] = Queen.new(:white, [1, 1], self)
+   #  @board[0][4] = King.new(:black, [0, 4], self)
+   #  @board[7][4] = King.new(:white, [7, 4], self)
   end
   
   def [](pos)
@@ -52,19 +56,13 @@ class Board
     @board[7][4] = King.new(:white, [7, 4], self)      
   end
   
-  # def pieces
-  #   @board.flatten.compact
-  # end
+  def pieces
+    @board.flatten.compact
+  end
   
   def find_king(color)
-    (0..7).each do |row|
-      (0..7).each do |col|
-        if !(@board[row][col].nil?)
-          if @board[row][col].color == color && @board[row][col].is_a?(King) 
-            return [row, col]
-          end
-        end   
-      end
+    pieces.each do | piece |
+        return piece.pos if piece.color == color && piece.is_a?(King)
     end
     nil
   end
@@ -76,21 +74,14 @@ class Board
   
   def in_check?(color)
     kings_coords = find_king(color)
-    #p "in_check is here"
     all_moves(swap_color(color)).include?(kings_coords)
   end
   
   def all_moves(color) 
     all_moves = []
-    (0..7).each do |row|
-      (0..7).each do |col|
-        if !(@board[row][col].nil?) 
-          if @board[row][col].color == color
-            if !(@board[row][col].moves.nil?) 
-              all_moves += @board[row][col].moves
-            end
-          end
-        end   
+    pieces.each do |piece|
+      if piece.color == color  
+        all_moves += piece.moves  
       end
     end
     all_moves
@@ -102,13 +93,10 @@ class Board
     
     if @board[start_row][start_col].nil?
       raise ChessError.new("No piece there")
-      #raise "No piece there"
     elsif !(@board[start_row][start_col].valid_moves.include?(end_pos))
       raise ChessError.new("That piece can't go there, dude!")
-      #raise "That piece can't go there, dude!"
     elsif @board[start_row][start_col].move_into_check?(end_pos)
       raise ChessError.new("You can't put yourself into check.")
-      #raise "You can't put yourself into check."
     end
     move!(start_pos, end_pos)
 
