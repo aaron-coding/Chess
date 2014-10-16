@@ -8,16 +8,19 @@ class SteppingPiece < Piece
       temp_move[1] += delta[1]
       piece_moves << temp_move.dup
     end
+    
     piece_moves.select! do |p_move| 
       p_move[0] >= 0 && 
       p_move[0] <= 7 && 
       p_move[1] >= 0 && 
       p_move[1] <= 7
     end
+    
     piece_moves.select! do |coord| 
       board[coord].nil? ||
       board[coord].color != color
     end
+    
     piece_moves
     
   end

@@ -1,3 +1,4 @@
+require_relative 'pieces'
 
 class Board
   attr_reader :board
@@ -5,16 +6,11 @@ class Board
   def initialize(fill = true)
     @board = Array.new(8) { Array.new(8) }
     populate if fill
-    # @board[2][2] = Queen.new(:white, [2, 2], self)
-   #  @board[1][1] = Queen.new(:white, [1, 1], self)
-   #  @board[0][4] = King.new(:black, [0, 4], self)
-   #  @board[7][4] = King.new(:white, [7, 4], self)
   end
   
   def [](pos)
     row, col = pos
     @board[row][col]
-    
   end
 
   def []=(pos, piece)
@@ -74,14 +70,16 @@ class Board
   
   def in_check?(color)
     kings_coords = find_king(color)
-    all_moves(swap_color(color)).include?(kings_coords)
+    pieces.any? do |piece|
+      piece.color != color && piece.moves.include?(kings_coords)
+    end
   end
   
   def all_moves(color) 
     all_moves = []
     pieces.each do |piece|
       if piece.color == color  
-        all_moves += piece.moves  
+        all_moves += piece.valid_moves  
       end
     end
     all_moves
@@ -94,7 +92,7 @@ class Board
     if @board[start_row][start_col].nil?
       raise ChessError.new("No piece there")
     elsif !(@board[start_row][start_col].valid_moves.include?(end_pos))
-      raise ChessError.new("That piece can't go there, dude!")
+      raise ChessError.new("That piece can't go there, sorry!")
     elsif @board[start_row][start_col].move_into_check?(end_pos)
       raise ChessError.new("You can't put yourself into check.")
     end
@@ -127,6 +125,7 @@ class Board
   end
   
   def display
+    puts "\n\n"
     print "    0   1   2   3   4   5   6   7"
     @board.each_with_index do |row, idx|
       puts "\n   ________________________________"
@@ -140,9 +139,7 @@ class Board
   end
     
   def checkmate?(color)
-    if in_check?(color)
-      return all_moves(color).count == 0
-    end
-    false
+    return false unless in_check?(color)
+    all_moves(color).count == 0
   end
 end

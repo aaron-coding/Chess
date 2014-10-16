@@ -8,9 +8,7 @@ class Piece
     @pos = pos
   end
   
-  def moves
-  end 
-  
+
   def set_pos(new_pos)
     @pos = new_pos[0], new_pos[1]
   end
@@ -19,7 +17,6 @@ class Piece
     moves.select do |move|
       move_into_check?(move) == false
     end
-
   end
   
   def move_into_check?(new_pos)
